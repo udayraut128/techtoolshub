@@ -1,0 +1,7 @@
+gunicorn==25.1.0
+packaging==26.0
+Flask
+pandas
+openpyxl
+qrcode
+pillow
