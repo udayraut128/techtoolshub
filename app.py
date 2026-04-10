@@ -1,15 +1,26 @@
-from flask import Flask, render_template, request, send_file, redirect, url_for
+from flask import Flask, render_template, request, send_file, redirect, url_for, jsonify, send_from_directory
 import pandas as pd
 import os
 import qrcode
 import random
 import string
+import uuid
 
 app = Flask(__name__)
 
-app.config['UPLOAD_FOLDER'] = 'uploads'
-if not os.path.exists(app.config['UPLOAD_FOLDER']):
-    os.makedirs(app.config['UPLOAD_FOLDER'])
+# -------------------------------
+# Configurations
+# -------------------------------
+UPLOAD_FOLDER = "uploads"
+STATIC_FOLDER = "static"
+
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+os.makedirs(STATIC_FOLDER, exist_ok=True)
+
+# Store file mappings (temporary memory)
+file_map = {}
 
 
 # ---------------------------------
@@ -51,6 +62,13 @@ def calculate_stats(group):
 
 
 # ---------------------------------
+# Generate Short ID
+# ---------------------------------
+def generate_short_id(length=6):
+    return ''.join(random.choices(string.ascii_letters + string.digits, k=length))
+
+
+# ---------------------------------
 # Home Page
 # ---------------------------------
 @app.route("/")
@@ -70,10 +88,11 @@ def qr():
 
         img = qrcode.make(url)
 
-        path = "static/qr.png"
+        filename = ''.join(random.choices(string.ascii_letters, k=6)) + ".png"
+        path = os.path.join(STATIC_FOLDER, filename)
         img.save(path)
 
-        qr_image = path
+        qr_image = f"/static/{filename}"
 
     return render_template("qr.html", qr_image=qr_image)
 
@@ -89,16 +108,24 @@ def group_generator():
         file = request.files["file"]
         num_groups = int(request.form["groups"])
 
-        if not file:
+        if not file or file.filename == "":
             return redirect(url_for("group_generator"))
 
-        filepath = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
+        filepath = os.path.join(UPLOAD_FOLDER, file.filename)
         file.save(filepath)
 
-        if file.filename.endswith(".csv"):
-            df = pd.read_csv(filepath)
-        else:
-            df = pd.read_excel(filepath)
+        try:
+            if file.filename.endswith(".csv"):
+                df = pd.read_csv(filepath)
+            else:
+                df = pd.read_excel(filepath)
+        except:
+            return "Error reading file"
+
+        required_columns = ["Grade in pre", "Gender"]
+        for col in required_columns:
+            if col not in df.columns:
+                return f"Missing column: {col}"
 
         groups = create_balanced_groups(df, num_groups)
 
@@ -126,10 +153,9 @@ def group_generator():
         highest_avg = max(group_averages)
         lowest_avg = min(group_averages)
         gap = round(highest_avg - lowest_avg, 2)
-
         overall_avg = round(df["Grade in pre"].mean(), 2)
 
-        output_file = os.path.join(app.config['UPLOAD_FOLDER'], "group_output.xlsx")
+        output_file = os.path.join(UPLOAD_FOLDER, "group_output.xlsx")
         pd.DataFrame(all_students).to_excel(output_file, index=False)
 
         return render_template(
@@ -149,8 +175,60 @@ def group_generator():
 # ---------------------------------
 @app.route("/download")
 def download():
-    file_path = os.path.join(app.config['UPLOAD_FOLDER'], "group_output.xlsx")
+    file_path = os.path.join(UPLOAD_FOLDER, "group_output.xlsx")
     return send_file(file_path, as_attachment=True)
+
+
+# ---------------------------------
+# Share Page
+# ---------------------------------
+@app.route("/share")
+def share():
+    return render_template("share.html")
+
+
+# ---------------------------------
+# Upload File (QR + Link)
+# ---------------------------------
+@app.route("/upload", methods=["POST"])
+def upload_file():
+    if "file" not in request.files:
+        return jsonify({"error": "No file uploaded"})
+
+    file = request.files["file"]
+
+    unique_name = str(uuid.uuid4()) + "_" + file.filename
+    file_path = os.path.join(UPLOAD_FOLDER, unique_name)
+    file.save(file_path)
+
+    short_id = generate_short_id()
+    file_map[short_id] = unique_name
+
+    # ✅ FIXED route
+    short_url = f"{request.host_url}file/{short_id}"
+
+    # QR Code
+    qr_filename = f"{short_id}.png"
+    qr_path = os.path.join(STATIC_FOLDER, qr_filename)
+
+    img = qrcode.make(short_url)
+    img.save(qr_path)
+
+    return jsonify({
+        "url": short_url,
+        "qr": f"/static/{qr_filename}"
+    })
+
+
+# ---------------------------------
+# File Download Route
+# ---------------------------------
+@app.route("/file/<short_id>")
+def redirect_to_file(short_id):
+    if short_id in file_map:
+        filename = file_map[short_id]
+        return send_from_directory(UPLOAD_FOLDER, filename, as_attachment=True)
+    return "File not found", 404
 
 
 # ---------------------------------
