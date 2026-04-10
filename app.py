@@ -5,6 +5,7 @@ import qrcode
 import random
 import string
 import uuid
+import zipfile
 
 app = Flask(__name__)
 
@@ -195,14 +196,40 @@ def upload_file():
     if "file" not in request.files:
         return jsonify({"error": "No file uploaded"})
 
-    file = request.files["file"]
+    files = request.files.getlist("file")
 
-    unique_name = str(uuid.uuid4()) + "_" + file.filename
-    file_path = os.path.join(UPLOAD_FOLDER, unique_name)
-    file.save(file_path)
+    if not files or files[0].filename == "":
+        return jsonify({"error": "No files selected"})
 
     short_id = generate_short_id()
-    file_map[short_id] = unique_name
+
+    upload_path = os.path.join(UPLOAD_FOLDER, short_id)
+    os.makedirs(upload_path, exist_ok=True)
+
+    saved_files = []
+
+    # Save all files (file or folder)
+    for file in files:
+        filename = file.filename
+
+        # preserve folder structure
+        file_path = os.path.join(upload_path, filename)
+        os.makedirs(os.path.dirname(file_path), exist_ok=True)
+
+        file.save(file_path)
+        saved_files.append(file_path)
+
+    # Create ZIP
+    zip_filename = f"{short_id}.zip"
+    zip_path = os.path.join(UPLOAD_FOLDER, zip_filename)
+
+    with zipfile.ZipFile(zip_path, 'w') as zipf:
+        for file_path in saved_files:
+            arcname = os.path.relpath(file_path, upload_path)
+            zipf.write(file_path, arcname)
+
+    # Store mapping
+    file_map[short_id] = zip_filename
 
     short_url = f"{request.host_url}file/{short_id}"
 
@@ -217,7 +244,6 @@ def upload_file():
         "url": short_url,
         "qr": f"/static/{qr_filename}"
     })
-
 
 # ---------------------------------
 # Show Download Page (NO auto download)

@@ -19,16 +19,28 @@
 </h1>
 
 <p class="text-gray-600 mb-6">
-Upload a file and get a short download link instantly
+Upload a file or a folder and get a short download link instantly
 </p>
 
 <!-- Upload Form -->
 <form id="uploadForm" class="space-y-4">
 
+<p class="font-semibold text-left">Upload Files</p>
 <input 
 type="file" 
 name="file" 
-required
+id="fileInput"
+multiple
+class="w-full p-3 border rounded-lg"
+/>
+
+<p class="font-semibold text-left mt-4">Upload Folder</p>
+<input 
+type="file" 
+name="file" 
+id="folderInput"
+multiple 
+webkitdirectory
 class="w-full p-3 border rounded-lg"
 />
 
@@ -38,7 +50,12 @@ class="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 trans
 >
 Upload & Generate Link
 </button>
-
+<button 
+type="button"
+onclick="clearSelection()"
+class="w-full bg-gray-500 text-white py-2 rounded-lg hover:bg-gray-600 transition">
+Clear Selection
+</button>
 </form>
 
 <!-- Loading -->
@@ -53,7 +70,6 @@ Uploading...
 ✅ File Uploaded Successfully!
 </p>
 
-<!-- Link -->
 <input 
 id="downloadLink"
 type="text" 
@@ -61,7 +77,6 @@ readonly
 class="w-full p-3 border rounded-lg text-center"
 />
 
-<!-- Buttons -->
 <div class="flex gap-3 justify-center mt-3">
 
 <button 
@@ -98,12 +113,55 @@ Open
 <script>
 
 const form = document.getElementById("uploadForm");
+const fileInput = document.getElementById("fileInput");
+const folderInput = document.getElementById("folderInput");
+
 const loading = document.getElementById("loading");
 const resultBox = document.getElementById("resultBox");
 const downloadLink = document.getElementById("downloadLink");
 const qrImage = document.getElementById("qrImage");
 const openLink = document.getElementById("openLink");
 const error = document.getElementById("error");
+
+// ✅ Allow only one at a time (disable other)
+fileInput.addEventListener("change", () => {
+    if (fileInput.files.length > 0) {
+        folderInput.disabled = true;
+    } else {
+        folderInput.disabled = false;
+    }
+});
+
+folderInput.addEventListener("change", () => {
+    if (folderInput.files.length > 0) {
+        fileInput.disabled = true;
+    } else {
+        fileInput.disabled = false;
+    }
+});
+function clearSelection() {
+    // Clear file inputs
+    fileInput.value = "";
+    folderInput.value = "";
+
+    // Enable both inputs
+    fileInput.disabled = false;
+    folderInput.disabled = false;
+
+    // Hide result section
+    resultBox.classList.add("hidden");
+
+    // Clear link + QR
+    downloadLink.value = "";
+    openLink.href = "#";
+
+    qrImage.src = "";
+    qrImage.classList.add("hidden");
+
+    // Hide error if any
+    error.classList.add("hidden");
+    error.innerText = "";
+}
 
 form.addEventListener("submit", async function(e) {
     e.preventDefault();
@@ -127,11 +185,9 @@ form.addEventListener("submit", async function(e) {
         if (data.url) {
             resultBox.classList.remove("hidden");
 
-            // ✅ Set link
             downloadLink.value = data.url;
             openLink.href = data.url;
 
-            // ✅ Show QR
             qrImage.src = data.qr;
             qrImage.classList.remove("hidden");
 
