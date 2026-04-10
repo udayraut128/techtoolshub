@@ -204,7 +204,6 @@ def upload_file():
     short_id = generate_short_id()
     file_map[short_id] = unique_name
 
-    # ✅ FIXED route
     short_url = f"{request.host_url}file/{short_id}"
 
     # QR Code
@@ -221,10 +220,20 @@ def upload_file():
 
 
 # ---------------------------------
-# File Download Route
+# Show Download Page (NO auto download)
 # ---------------------------------
 @app.route("/file/<short_id>")
-def redirect_to_file(short_id):
+def file_page(short_id):
+    if short_id in file_map:
+        return render_template("download.html", file_id=short_id)
+    return "File not found", 404
+
+
+# ---------------------------------
+# Actual Download (button click)
+# ---------------------------------
+@app.route("/download/<short_id>")
+def download_file(short_id):
     if short_id in file_map:
         filename = file_map[short_id]
         return send_from_directory(UPLOAD_FOLDER, filename, as_attachment=True)
