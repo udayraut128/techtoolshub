@@ -15,19 +15,30 @@
 
   <!-- 🔷 Canonical -->
   <link rel="canonical" href="{% block canonical %}https://techtools.hackerbytez.com{% endblock %}">
-
+  <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{% block og_title %}TechTools{% endblock %}">
+<meta name="twitter:description" content="{% block og_desc %}Free online tools{% endblock %}">
+<meta name="twitter:image" content="{% block og_image %}{{ url_for('static', filename='logo.png') }}{% endblock %}">
   <!-- 🔷 Open Graph (Social Sharing) -->
   <meta property="og:title" content="{% block og_title %}TechTools{% endblock %}">
   <meta property="og:description" content="{% block og_desc %}Free online tools{% endblock %}">
   <meta property="og:url" content="{% block og_url %}https://techtools.hackerbytez.com{% endblock %}">
   <meta property="og:type" content="website">
-
+<meta property="og:image" content="https://techtools.hackerbytez.com/static/logo.png">
   <!-- 🔷 Favicon -->
   <link rel="icon" href="{{ url_for('static', filename='logo.png') }}">
 
   <!-- 🔷 Fonts (Optional Upgrade) -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "TechTools",
+  "url": "https://techtools.hackerbytez.com",
+  "description": "Free online tools for productivity like QR generator, file sharing and group creator"
+}
+</script>
   <!-- 🔷 Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
 
