@@ -1,17 +1,13 @@
-from flask import Flask, app
+from flask import Flask
 import os
 
 def create_app():
     app = Flask(__name__)
 
-    # Config
-    
-
     BASE_DIR = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
     app.config['UPLOAD_FOLDER'] = os.path.join(BASE_DIR, "uploads")
     app.config['STATIC_FOLDER'] = os.path.join(BASE_DIR, "app/static")
-    app.config['STATIC_FOLDER'] = "app/static"
 
     os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
