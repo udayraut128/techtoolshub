@@ -1,0 +1,95 @@
+<header class="bg-white/90 backdrop-blur border-b sticky top-0 z-50">
+
+  <div class="max-w-7xl mx-auto px-4">
+
+    <div class="flex items-center justify-between h-20">
+
+      <!-- 🔹 Logo -->
+      <a href="/" class="flex items-center gap-2">
+
+        <img src="{{ url_for('static', filename='logo.png') }}" 
+             alt="TechTools Logo"
+             class="w-20 h-20 object-contain">
+
+        
+
+      </a>
+
+      <!-- 🔹 Desktop Menu -->
+      <nav class="hidden md:flex items-center gap-6 text-gray-600 font-medium">
+
+        <a href="/" class="hover:text-indigo-600 transition">Home</a>
+
+        <a href="/qr" class="hover:text-indigo-600 transition flex items-center gap-1">
+          QR Tool
+        </a>
+
+        <a href="/group-generator" class="hover:text-indigo-600 transition">
+          Group Tool
+        </a>
+
+        <a href="/share" class="hover:text-indigo-600 transition">
+          File Share
+        </a>
+
+      </nav>
+
+      <!-- 🔹 Right Section -->
+      <div class="flex items-center gap-3">
+
+        <!-- 🔍 Search (Optional but pro) -->
+        <div class="hidden lg:flex items-center bg-gray-100 px-3 py-1.5 rounded-lg">
+          <input 
+            type="text" 
+            placeholder="Search tools..."
+            class="bg-transparent outline-none text-sm w-32">
+        </div>
+
+        <!-- CTA -->
+        <a href="https://hackerbytez.com" target="_blank"
+           class="hidden sm:block bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-indigo-700 transition shadow">
+           Main Site
+        </a>
+
+        <!-- Mobile Button -->
+        <button id="menu-btn" class="md:hidden text-gray-700 text-2xl">
+          ☰
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- 🔷 Mobile Menu -->
+  <div id="mobile-menu"
+       class="hidden md:hidden bg-white border-t shadow-lg">
+
+    <div class="flex flex-col p-4 space-y-4 text-gray-700 font-medium">
+
+      <a href="/" class="hover:text-indigo-600">Home</a>
+      <a href="/qr" class="hover:text-indigo-600">QR Tool</a>
+      <a href="/group-generator" class="hover:text-indigo-600">Group Tool</a>
+      <a href="/share" class="hover:text-indigo-600">File Share</a>
+
+      <a href="https://hackerbytez.com" target="_blank"
+         class="bg-indigo-600 text-white text-center py-2 rounded-lg">
+         Main Website
+      </a>
+
+    </div>
+
+  </div>
+
+</header>
+
+<!-- 🔷 SCRIPT -->
+<script>
+const btn = document.getElementById("menu-btn");
+const menu = document.getElementById("mobile-menu");
+
+btn.addEventListener("click", () => {
+    menu.classList.toggle("hidden");
+});
+</script>

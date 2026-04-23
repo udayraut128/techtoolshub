@@ -1,0 +1,203 @@
+{% extends "base.html" %}
+
+{% block title %}File Sharing Tool | Tech Tools{% endblock %}
+
+{% block content %}
+
+<section class="flex justify-center px-4 py-10">
+
+<div class="bg-white shadow-xl rounded-3xl p-6 sm:p-10 w-full max-w-xl border">
+
+  <!-- Title -->
+  <div class="text-center mb-6">
+
+    <div class="flex justify-center mb-3">
+      <div class="bg-indigo-100 p-3 rounded-full">
+        <i data-lucide="folder-up" class="w-6 h-6 text-indigo-600"></i>
+      </div>
+    </div>
+
+    <h1 class="text-2xl font-bold">File Sharing Tool</h1>
+    <p class="text-gray-500 text-sm mt-2">
+      Upload files or folders and generate shareable link
+    </p>
+
+  </div>
+
+  <!-- FORM (UNCHANGED LOGIC) -->
+  <form id="uploadForm" class="space-y-5">
+
+    <div>
+      <label class="text-sm font-medium flex items-center gap-2">
+        <i data-lucide="file" class="w-4 h-4"></i>
+        Upload Files
+      </label>
+
+      <input type="file" name="file" id="fileInput" multiple
+        class="w-full mt-2 p-3 border rounded-xl bg-gray-50">
+    </div>
+
+    <div>
+      <label class="text-sm font-medium flex items-center gap-2">
+        <i data-lucide="folder" class="w-4 h-4"></i>
+        Upload Folder
+      </label>
+
+      <input type="file" name="file" id="folderInput" multiple webkitdirectory
+        class="w-full mt-2 p-3 border rounded-xl bg-gray-50">
+    </div>
+
+    <button class="w-full bg-indigo-600 text-white py-3 rounded-xl hover:bg-indigo-700 transition flex items-center justify-center gap-2">
+
+      <i data-lucide="upload-cloud" class="w-5 h-5"></i>
+      Upload & Generate Link
+
+    </button>
+
+    <button type="button"
+      onclick="clearSelection()"
+      class="w-full bg-gray-100 text-gray-700 py-2 rounded-xl hover:bg-gray-200 transition">
+
+      Clear Selection
+
+    </button>
+
+  </form>
+
+  <!-- LOADING -->
+  <p id="loading" class="text-indigo-600 mt-4 hidden text-center">
+    Uploading...
+  </p>
+
+  <!-- RESULT -->
+  <div id="resultBox" class="mt-6 hidden text-center border-t pt-5">
+
+    <p class="text-green-600 font-semibold mb-3">
+      File Uploaded Successfully
+    </p>
+
+    <input id="downloadLink" type="text" readonly
+      class="w-full p-3 border rounded-xl text-center bg-gray-50">
+
+    <div class="flex gap-3 justify-center mt-4 flex-wrap">
+
+      <button onclick="copyLink()"
+        class="bg-green-600 text-white px-4 py-2 rounded-lg flex items-center gap-2">
+
+        <i data-lucide="copy" class="w-4 h-4"></i>
+        Copy
+
+      </button>
+
+      <a id="openLink" target="_blank"
+        class="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-2">
+
+        <i data-lucide="external-link" class="w-4 h-4"></i>
+        Open
+
+      </a>
+
+    </div>
+
+    <div class="mt-6">
+      <img id="qrImage" class="mx-auto w-40 h-40 border rounded-xl hidden p-2 bg-white">
+      <p class="text-gray-500 text-sm mt-2">Scan QR to download</p>
+    </div>
+
+  </div>
+
+  <!-- ERROR -->
+  <p id="error" class="text-red-500 mt-4 hidden text-center"></p>
+
+</div>
+
+</section>
+
+<!-- YOUR ORIGINAL JS (NO CHANGE) -->
+<script>
+
+const form = document.getElementById("uploadForm");
+const fileInput = document.getElementById("fileInput");
+const folderInput = document.getElementById("folderInput");
+
+const loading = document.getElementById("loading");
+const resultBox = document.getElementById("resultBox");
+const downloadLink = document.getElementById("downloadLink");
+const qrImage = document.getElementById("qrImage");
+const openLink = document.getElementById("openLink");
+const error = document.getElementById("error");
+
+fileInput.addEventListener("change", () => {
+    folderInput.disabled = fileInput.files.length > 0;
+});
+
+folderInput.addEventListener("change", () => {
+    fileInput.disabled = folderInput.files.length > 0;
+});
+
+function clearSelection() {
+    fileInput.value = "";
+    folderInput.value = "";
+
+    fileInput.disabled = false;
+    folderInput.disabled = false;
+
+    resultBox.classList.add("hidden");
+
+    downloadLink.value = "";
+    openLink.href = "#";
+
+    qrImage.src = "";
+    qrImage.classList.add("hidden");
+
+    error.classList.add("hidden");
+}
+
+form.addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    loading.classList.remove("hidden");
+    resultBox.classList.add("hidden");
+    error.classList.add("hidden");
+
+    let formData = new FormData(form);
+
+    try {
+        let res = await fetch("/upload", {
+            method: "POST",
+            body: formData
+        });
+
+        let data = await res.json();
+
+        loading.classList.add("hidden");
+
+        if (data.url) {
+            resultBox.classList.remove("hidden");
+
+            downloadLink.value = data.url;
+            openLink.href = data.url;
+
+            qrImage.src = data.qr;
+            qrImage.classList.remove("hidden");
+
+        } else {
+            error.classList.remove("hidden");
+            error.innerText = data.error;
+        }
+
+    } catch (err) {
+        loading.classList.add("hidden");
+        error.classList.remove("hidden");
+        error.innerText = "Something went wrong!";
+    }
+});
+
+function copyLink() {
+    navigator.clipboard.writeText(downloadLink.value);
+    alert("Link copied!");
+}
+
+</script>
+
+{% endblock %}

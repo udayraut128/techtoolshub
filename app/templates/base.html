@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <!-- 🔷 Basic Meta -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- 🔷 SEO -->
+  <title>{% block title %}TechTools | Free Online Tools{% endblock %}</title>
+
+  <meta name="description" content="{% block description %}A collection of powerful online tools to simplify your work and boost productivity.{% endblock %}">
+  <meta name="keywords" content="{% block keywords %}online tools, free tools, productivity tools{% endblock %}">
+  <meta name="author" content="HackerBytez">
+
+  <!-- 🔷 Canonical -->
+  <link rel="canonical" href="{% block canonical %}https://techtools.hackerbytez.com{% endblock %}">
+
+  <!-- 🔷 Open Graph (Social Sharing) -->
+  <meta property="og:title" content="{% block og_title %}TechTools{% endblock %}">
+  <meta property="og:description" content="{% block og_desc %}Free online tools{% endblock %}">
+  <meta property="og:url" content="{% block og_url %}https://techtools.hackerbytez.com{% endblock %}">
+  <meta property="og:type" content="website">
+
+  <!-- 🔷 Favicon -->
+  <link rel="icon" href="{{ url_for('static', filename='logo.png') }}">
+
+  <!-- 🔷 Fonts (Optional Upgrade) -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- 🔷 Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- 🔷 Font Awesome (Brand Icons) -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+  <!-- 🔷 Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- 🔷 Custom Styling -->
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+  </style>
+
+  <!-- 🔷 Extra Head (Per Page Custom) -->
+  {% block extra_head %}{% endblock %}
+
+</head>
+
+<body class="bg-gray-50 flex flex-col min-h-screen">
+
+  <!-- 🔷 HEADER -->
+  {% include "partials/header.html" %}
+
+  <!-- 🔷 MAIN CONTENT -->
+  <main class="flex-grow">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- 🔷 FOOTER -->
+  {% include "partials/footer.html" %}
+
+  <!-- 🔷 Scripts -->
+  <script>
+    lucide.createIcons();
+  </script>
+
+  {% block extra_scripts %}{% endblock %}
+
+</body>
+</html>

@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+
+{% block title %}Free QR Code Generator Online | TechTools{% endblock %}
+
+{% block content %}
+
+<!-- 🔷 Main -->
+<main class="flex-grow flex items-center justify-center px-4 py-10">
+
+  <div class="w-full max-w-md">
+
+    <!-- Card -->
+    <div class="bg-white/90 backdrop-blur p-6 sm:p-10 rounded-3xl shadow-2xl text-center border border-gray-100">
+
+      <!-- Icon -->
+      <div class="flex justify-center mb-4">
+        <div class="bg-indigo-100 p-3 rounded-full">
+          <i data-lucide="qr-code" class="w-8 h-8 text-indigo-600"></i>
+        </div>
+      </div>
+
+      <!-- Title -->
+      <h1 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-2">
+        QR Code Generator
+      </h1>
+
+      <p class="text-gray-500 mb-6 text-sm sm:text-base">
+        Create and download QR codes instantly for any link.
+      </p>
+
+      <!-- Form -->
+      <form method="POST" action="{{ url_for('qr.qr_page') }}" class="space-y-4">
+
+        <div class="relative">
+          <input 
+            type="text" 
+            name="url" 
+            placeholder="https://example.com"
+            required
+            class="w-full p-3 pl-10 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+          >
+
+          <i data-lucide="link" class="absolute left-3 top-3.5 w-5 h-5 text-gray-400"></i>
+        </div>
+
+        <button 
+          type="submit"
+          class="w-full flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white p-3 rounded-xl font-semibold transition shadow-md">
+
+          <i data-lucide="sparkles" class="w-5 h-5"></i>
+          Generate QR Code
+
+        </button>
+
+      </form>
+
+      {% if qr_image %}
+
+      <!-- Result -->
+      <div class="mt-8 border-t pt-6">
+
+        <h2 class="text-lg font-semibold text-gray-700 mb-4 flex items-center justify-center gap-2">
+          <i data-lucide="image" class="w-5 h-5"></i>
+          Your QR Code
+        </h2>
+
+        <img 
+          src="{{ qr_image }}" 
+          class="mx-auto rounded-xl shadow-lg w-40 sm:w-48 border p-2 bg-white">
+
+        <div class="flex flex-col sm:flex-row gap-3 justify-center mt-5">
+
+          <a 
+            href="{{ qr_image }}" 
+            download="qrcode.png"
+            class="flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-xl font-semibold transition shadow">
+
+            <i data-lucide="download" class="w-5 h-5"></i>
+            Download
+
+          </a>
+
+          <button 
+            onclick="copyLink('{{ qr_image }}')"
+            class="flex items-center justify-center gap-2 bg-gray-100 hover:bg-gray-200 px-5 py-2 rounded-xl font-semibold shadow">
+
+            <i data-lucide="copy" class="w-5 h-5 text-gray-600"></i>
+            Copy Link
+
+          </button>
+
+        </div>
+
+      </div>
+
+      {% endif %}
+
+      <!-- Back -->
+      <a href="/" class="flex items-center justify-center gap-1 mt-6 text-gray-500 hover:text-indigo-600 text-sm">
+        <i data-lucide="arrow-left" class="w-4 h-4"></i>
+        Back to Home
+      </a>
+
+    </div>
+
+  </div>
+
+</main>
+
+<!-- 🔷 SEO Content -->
+<section class="max-w-4xl mx-auto px-4 pb-10 text-gray-700 text-sm leading-relaxed">
+
+  <h2 class="text-lg font-semibold mb-2">About QR Code Generator</h2>
+
+  <p>
+    This free QR Code Generator allows you to quickly create QR codes for URLs, text, and more. 
+    It is fast, secure, and works on all devices including mobile, tablet, and desktop.
+  </p>
+
+</section>
+
+<!-- 🔷 Script -->
+<script>
+function copyLink(link) {
+  navigator.clipboard.writeText(window.location.origin + link);
+  alert("QR link copied!");
+}
+</script>
+
+{% endblock %}
