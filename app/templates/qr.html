@@ -1,8 +1,13 @@
 {% extends "base.html" %}
 
-{% block title %}QR Code Generator | TechTools{% endblock %}
-{% block og_title %}QR Code Generator{% endblock %}
-{% block og_desc %}Generate QR codes instantly{% endblock %}
+{% set og_title = "QR Code Generator | TechTools" %}
+{% set og_desc = "Generate QR codes instantly with TechTools QR generator." %}
+{% set og_url = "https://techtools.hackerbytez.com/qr" %}
+{% set og_image = url_for('static', filename='logo.png') %}
+
+{% block title %}
+QR Code Generator | TechTools
+{% endblock %}
 
 {% block content %}
 

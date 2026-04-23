@@ -5,50 +5,40 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- ✅ SEO Title -->
+<!-- ================= SEO ================= -->
 <title>{% block title %}TechTools | Free Online Tools{% endblock %}</title>
 
-<!-- ✅ Basic SEO -->
 <meta name="description" content="{% block description %}Free online tools like QR generator, file sharing, and group creator.{% endblock %}">
 <meta name="keywords" content="{% block keywords %}online tools, QR code generator, file sharing, group generator{% endblock %}">
 <meta name="author" content="HackerBytez">
 
-<!-- ✅ Canonical -->
 <link rel="canonical" href="{% block canonical %}https://techtools.hackerbytez.com{% endblock %}">
 
-<!-- ✅ DEFINE ONCE -->
-{% block og_title %}TechTools{% endblock %}
-{% block og_desc %}Free online tools{% endblock %}
-{% block og_url %}https://techtools.hackerbytez.com{% endblock %}
-{% block og_image %}{{ url_for('static', filename='logo.png') }}{% endblock %}
-
-<!-- ✅ Open Graph -->
-<meta property="og:title" content="{{ self.og_title() }}">
-<meta property="og:description" content="{{ self.og_desc() }}">
-<meta property="og:url" content="{{ self.og_url() }}">
+<!-- ================= OPEN GRAPH (SOCIAL) ================= -->
+<meta property="og:title" content="{{ og_title | default('TechTools | Free Online Tools') }}">
+<meta property="og:description" content="{{ og_desc | default('Free online tools for productivity') }}">
+<meta property="og:url" content="{{ og_url | default('https://techtools.hackerbytez.com') }}">
 <meta property="og:type" content="website">
-<meta property="og:image" content="{{ self.og_image() }}">
+<meta property="og:image" content="{{ og_image | default(url_for('static', filename='logo.png')) }}">
 
-<!-- ✅ Twitter -->
+<!-- ================= TWITTER ================= -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="{{ self.og_title() }}">
-<meta name="twitter:description" content="{{ self.og_desc() }}">
-<meta name="twitter:image" content="{{ self.og_image() }}">
+<meta name="twitter:title" content="{{ og_title | default('TechTools | Free Online Tools') }}">
+<meta name="twitter:description" content="{{ og_desc | default('Free online tools for productivity') }}">
+<meta name="twitter:image" content="{{ og_image | default(url_for('static', filename='logo.png')) }}">
 
-<!-- ✅ Favicon -->
+<!-- ================= FAVICON ================= -->
 <link rel="icon" href="{{ url_for('static', filename='logo.png') }}">
 
-<!-- Fonts -->
+<!-- ================= FONTS ================= -->
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-<!-- Tailwind -->
+<!-- ================= CSS LIBRARIES ================= -->
 <script src="https://cdn.tailwindcss.com"></script>
-
-<!-- Icons -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 <script src="https://unpkg.com/lucide@latest"></script>
 
-<!-- Schema (SEO BOOST 🔥) -->
+<!-- ================= STRUCTURED DATA (SEO BOOST) ================= -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -59,10 +49,11 @@
 }
 </script>
 
+<!-- ================= STYLE ================= -->
 <style>
-  body {
-    font-family: 'Inter', sans-serif;
-  }
+body {
+  font-family: 'Inter', sans-serif;
+}
 </style>
 
 {% block extra_head %}{% endblock %}
@@ -71,14 +62,18 @@
 
 <body class="bg-gray-50 flex flex-col min-h-screen">
 
+<!-- ================= HEADER ================= -->
 {% include "partials/header.html" %}
 
+<!-- ================= MAIN CONTENT ================= -->
 <main class="flex-grow">
   {% block content %}{% endblock %}
 </main>
 
+<!-- ================= FOOTER ================= -->
 {% include "partials/footer.html" %}
 
+<!-- ================= SCRIPTS ================= -->
 <script>
   lucide.createIcons();
 </script>

@@ -1,5 +1,10 @@
 {% extends "base.html" %}
 
+{% set og_title = "Tech Tools – Free Online Utilities" %}
+{% set og_desc = "Free online tools like QR generator, file sharing, and student group creator. Fast and easy to use." %}
+{% set og_url = "https://techtools.hackerbytez.com" %}
+{% set og_image = url_for('static', filename='logo.png') %}
+
 {% block title %}
 Tech Tools – Free Online Tools (QR, File Sharing, Group Generator)
 {% endblock %}
@@ -13,18 +18,6 @@ tech tools, free online tools, qr generator, file sharing tool, student group ge
 {% endblock %}
 
 {% block canonical %}
-https://techtools.hackerbytez.com
-{% endblock %}
-
-{% block og_title %}
-Tech Tools – Free Online Utilities
-{% endblock %}
-
-{% block og_desc %}
-Free online tools like QR generator, file sharing, and student group creator. Fast and easy to use.
-{% endblock %}
-
-{% block og_url %}
 https://techtools.hackerbytez.com
 {% endblock %}
 
