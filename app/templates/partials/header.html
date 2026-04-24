@@ -59,38 +59,37 @@
 
   </div>
 
-  <!-- Mobile Menu -->
-  <div id="mobile-menu"
-       class="hidden md:hidden bg-white border-t shadow-lg">
+<!-- Mobile Menu -->
+<div id="mobile-menu"
+     class="hidden fixed top-20 left-0 w-full bg-white shadow-lg border-t z-40 md:hidden">
 
-    <div class="flex flex-col p-5 space-y-4 text-gray-700 font-medium">
+  <div class="flex flex-col p-5 space-y-4 text-gray-700 font-medium">
 
-      <a href="/" class="hover:text-indigo-600 flex items-center gap-2">
-        <i data-lucide="home" class="w-4 h-4"></i> Home
-      </a>
+    <a href="/" class="hover:text-indigo-600 flex items-center gap-2">
+      <i data-lucide="home" class="w-4 h-4"></i> Home
+    </a>
 
-      <a href="/qr" class="hover:text-indigo-600 flex items-center gap-2">
-        <i data-lucide="qr-code" class="w-4 h-4"></i> QR Tool
-      </a>
+    <a href="/qr" class="hover:text-indigo-600 flex items-center gap-2">
+      <i data-lucide="qr-code" class="w-4 h-4"></i> QR Tool
+    </a>
 
-      <a href="/group-generator" class="hover:text-indigo-600 flex items-center gap-2">
-        <i data-lucide="users" class="w-4 h-4"></i> Group Tool
-      </a>
+    <a href="/group-generator" class="hover:text-indigo-600 flex items-center gap-2">
+      <i data-lucide="users" class="w-4 h-4"></i> Group Tool
+    </a>
 
-      <a href="/share" class="hover:text-indigo-600 flex items-center gap-2">
-        <i data-lucide="folder" class="w-4 h-4"></i> File Share
-      </a>
+    <a href="/share" class="hover:text-indigo-600 flex items-center gap-2">
+      <i data-lucide="folder" class="w-4 h-4"></i> File Share
+    </a>
 
-      <a href="https://hackerbytez.com" target="_blank"
-         class="bg-indigo-600 text-white text-center py-2 rounded-xl shadow flex items-center justify-center gap-2">
-
-        <i data-lucide="external-link"></i>
-        Main Website
-      </a>
-
-    </div>
+    <a href="https://hackerbytez.com" target="_blank"
+       class="bg-indigo-600 text-white text-center py-2 rounded-xl shadow flex items-center justify-center gap-2">
+      <i data-lucide="external-link" class="w-4 h-4"></i>
+      Main Website
+    </a>
 
   </div>
+</div>
+ 
 
 </header>
 
@@ -99,7 +98,15 @@
 const btn = document.getElementById("menu-btn");
 const menu = document.getElementById("mobile-menu");
 
-btn.addEventListener("click", () => {
+btn.addEventListener("click", (e) => {
+    e.stopPropagation();
     menu.classList.toggle("hidden");
+});
+
+// close when clicking outside
+document.addEventListener("click", (e) => {
+    if (!menu.contains(e.target) && !btn.contains(e.target)) {
+        menu.classList.add("hidden");
+    }
 });
 </script>

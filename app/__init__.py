@@ -16,10 +16,12 @@ def create_app():
     from .routes.qr import qr
     from .routes.group import group
     from .routes.file_share import file_share
+    from .routes.clipboard import clipboard
 
     app.register_blueprint(main)
     app.register_blueprint(qr)
     app.register_blueprint(group)
     app.register_blueprint(file_share)
+    app.register_blueprint(clipboard)
 
     return app
