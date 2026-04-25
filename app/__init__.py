@@ -17,11 +17,13 @@ def create_app():
     from .routes.group import group
     from .routes.file_share import file_share
     from .routes.clipboard import clipboard
+    from .routes.date_converter import date_converter
 
     app.register_blueprint(main)
     app.register_blueprint(qr)
     app.register_blueprint(group)
     app.register_blueprint(file_share)
     app.register_blueprint(clipboard)
+    app.register_blueprint(date_converter)
 
     return app
