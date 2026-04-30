@@ -6,3 +6,5 @@ openpyxl
 qrcode
 pillow
 nepali-datetime
+moviepy
+pillow

@@ -1,36 +1,31 @@
 <header class="bg-white/80 backdrop-blur-md border-b sticky top-0 z-50 shadow-sm">
 
   <div class="max-w-7xl mx-auto px-4">
-
     <div class="flex items-center justify-between h-20">
 
       <!-- Logo -->
       <a href="/" class="flex items-center gap-3 group">
-
-        <img src="{{ url_for('static', filename='logo.png') }}" 
+        <img src="{{ url_for('static', filename='logo.png') }}"
              alt="TechTools Logo"
-             class="w-20 h-20 object-contain group-hover:scale-105 transition">
-
-        
-
+             class="w-14 h-14 object-contain group-hover:scale-105 transition">
       </a>
 
       <!-- Desktop Menu -->
-      <nav class="hidden md:flex items-center gap-8 text-gray-600 font-medium">
+      <nav class="hidden md:flex items-center gap-6 text-gray-600 font-medium">
 
-        <a href="/" class="hover:text-indigo-600 transition flex items-center gap-2">
+        <a href="/" class="hover:text-indigo-600 flex items-center gap-2">
           <i data-lucide="home" class="w-4 h-4"></i> Home
         </a>
 
-        <a href="/qr" class="hover:text-indigo-600 transition flex items-center gap-2">
+        <a href="/qr" class="hover:text-indigo-600 flex items-center gap-2">
           <i data-lucide="qr-code" class="w-4 h-4"></i> QR Tool
         </a>
 
-        <a href="/group-generator" class="hover:text-indigo-600 transition flex items-center gap-2">
+        <a href="/group-generator" class="hover:text-indigo-600 flex items-center gap-2">
           <i data-lucide="users" class="w-4 h-4"></i> Group Tool
         </a>
 
-        <a href="/share" class="hover:text-indigo-600 transition flex items-center gap-2">
+        <a href="/share" class="hover:text-indigo-600 flex items-center gap-2">
           <i data-lucide="folder" class="w-4 h-4"></i> File Share
         </a>
 
@@ -39,74 +34,77 @@
       <!-- Right Section -->
       <div class="flex items-center gap-3">
 
-        <!-- CTA Button -->
+        <!-- CTA -->
         <a href="https://hackerbytez.com" target="_blank"
-           class="hidden sm:flex items-center gap-2 bg-indigo-600 text-white px-5 py-2 rounded-xl text-sm font-medium hover:bg-indigo-700 transition shadow-md hover:shadow-lg">
+           class="hidden sm:flex items-center gap-2 bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700 transition">
 
           <i data-lucide="globe" class="w-4 h-4"></i>
           Main Site
         </a>
 
         <!-- Mobile Button -->
-        <button id="menu-btn" 
-                class="md:hidden text-gray-700 text-3xl hover:text-indigo-600 transition">
+        <button id="menu-btn"
+                class="md:hidden text-gray-700 text-3xl">
           <i data-lucide="menu"></i>
         </button>
 
       </div>
 
     </div>
-
   </div>
 
-<!-- Mobile Menu -->
-<div id="mobile-menu"
-     class="hidden fixed top-20 left-0 w-full bg-white shadow-lg border-t z-40 md:hidden">
+  <!-- MOBILE MENU -->
+  <div id="mobile-menu"
+       class="hidden fixed top-20 left-0 w-full bg-white shadow-lg border-t z-50 md:hidden">
 
-  <div class="flex flex-col p-5 space-y-4 text-gray-700 font-medium">
+    <div class="flex flex-col p-5 space-y-4 text-gray-700 font-medium">
 
-    <a href="/" class="hover:text-indigo-600 flex items-center gap-2">
-      <i data-lucide="home" class="w-4 h-4"></i> Home
-    </a>
+      <a href="/" class="hover:text-indigo-600 flex items-center gap-2">
+        <i data-lucide="home" class="w-4 h-4"></i> Home
+      </a>
 
-    <a href="/qr" class="hover:text-indigo-600 flex items-center gap-2">
-      <i data-lucide="qr-code" class="w-4 h-4"></i> QR Tool
-    </a>
+      <a href="/qr" class="hover:text-indigo-600 flex items-center gap-2">
+        <i data-lucide="qr-code" class="w-4 h-4"></i> QR Tool
+      </a>
 
-    <a href="/group-generator" class="hover:text-indigo-600 flex items-center gap-2">
-      <i data-lucide="users" class="w-4 h-4"></i> Group Tool
-    </a>
+      <a href="/group-generator" class="hover:text-indigo-600 flex items-center gap-2">
+        <i data-lucide="users" class="w-4 h-4"></i> Group Tool
+      </a>
 
-    <a href="/share" class="hover:text-indigo-600 flex items-center gap-2">
-      <i data-lucide="folder" class="w-4 h-4"></i> File Share
-    </a>
+      <a href="/share" class="hover:text-indigo-600 flex items-center gap-2">
+        <i data-lucide="folder" class="w-4 h-4"></i> File Share
+      </a>
 
-    <a href="https://hackerbytez.com" target="_blank"
-       class="bg-indigo-600 text-white text-center py-2 rounded-xl shadow flex items-center justify-center gap-2">
-      <i data-lucide="external-link" class="w-4 h-4"></i>
-      Main Website
-    </a>
+      <a href="https://hackerbytez.com" target="_blank"
+         class="bg-indigo-600 text-white text-center py-2 rounded-lg flex items-center justify-center gap-2">
+        <i data-lucide="external-link" class="w-4 h-4"></i>
+        Main Website
+      </a>
 
+    </div>
   </div>
-</div>
- 
 
 </header>
 
-<!-- Script -->
+<!-- SCRIPT (FIXED SAFE VERSION) -->
 <script>
-const btn = document.getElementById("menu-btn");
-const menu = document.getElementById("mobile-menu");
+document.addEventListener("DOMContentLoaded", function () {
 
-btn.addEventListener("click", (e) => {
+  const btn = document.getElementById("menu-btn");
+  const menu = document.getElementById("mobile-menu");
+
+  if (!btn || !menu) return;
+
+  btn.addEventListener("click", function (e) {
     e.stopPropagation();
     menu.classList.toggle("hidden");
-});
+  });
 
-// close when clicking outside
-document.addEventListener("click", (e) => {
+  document.addEventListener("click", function (e) {
     if (!menu.contains(e.target) && !btn.contains(e.target)) {
-        menu.classList.add("hidden");
+      menu.classList.add("hidden");
     }
+  });
+
 });
 </script>

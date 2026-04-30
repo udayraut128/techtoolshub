@@ -1,0 +1,299 @@
+{% extends "base.html" %}
+
+{% block title %}Typing Speed Test | TechTools{% endblock %}
+
+{% block content %}
+
+<div class="min-h-screen flex flex-col items-center px-4 py-10 pt-24">
+  <!-- TOP BAR -->
+  <div class="flex flex-wrap justify-between items-center w-full max-w-5xl text-gray-700 mb-6 text-sm sm:text-base">
+
+    <div class="flex items-center gap-2">
+      <i data-lucide="sliders" class="w-4 h-4"></i>
+      <select id="difficulty" class="border rounded px-2 py-1 bg-white">
+        <option value="easy" selected>Easy</option>
+        <option value="medium">Medium</option>
+        <option value="hard">Hard</option>
+      </select>
+    </div>
+
+    <div class="flex items-center gap-2">
+      <i data-lucide="clock" class="w-4 h-4"></i>
+      <span id="time">60</span>s
+    </div>
+
+    <div class="flex items-center gap-2">
+      <i data-lucide="zap" class="w-4 h-4"></i>
+      <span id="wpm">0</span> WPM
+    </div>
+
+    <div class="flex items-center gap-2">
+      <i data-lucide="target" class="w-4 h-4"></i>
+      <span id="accuracy">100</span>%
+    </div>
+
+  </div>
+
+  <!-- TEXT DISPLAY -->
+  <div id="textDisplay"
+    class="w-full max-w-5xl bg-white border rounded-xl p-6 text-gray-800 text-xl sm:text-2xl leading-relaxed shadow-sm">
+  </div>
+
+  <!-- INPUT -->
+  <textarea id="inputText"
+  class="w-full max-w-5xl mt-6 p-4 border rounded-xl text-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+  placeholder="Start typing..." disabled></textarea>
+
+
+  <!-- RESET BUTTON -->
+  <button onclick="resetTest()"
+    class="mt-6 flex items-center gap-2 bg-red-500 text-white px-6 py-2 rounded-xl hover:bg-red-600">
+
+    <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+    Reset
+  </button>
+  <div id="resultPopup" style="display:none;">
+  <h2>Test Completed</h2>
+
+  <p>WPM: <span id="finalWpm"></span></p>
+  <p>Accuracy: <span id="finalAccuracy"></span>%</p>
+
+  <canvas id="chart"></canvas>
+
+  <button onclick="location.reload()">Restart</button>
+</div>
+
+</div>
+<style>
+
+
+/* blinking cursor */
+.typing-cursor {
+  position: relative;
+}
+
+.typing-cursor::before {
+  content: "";
+  position: absolute;
+  left: -2px;
+  top: 0;
+  width: 2px;
+  height: 100%;
+  background: #4f46e5;
+  animation: blinkCursor 0.8s infinite;
+}
+
+@keyframes blinkCursor {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.popup {
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: white;
+  padding: 20px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.3);
+  z-index: 1000;
+}
+
+
+</style>
+
+<script>
+ let timer = 60;
+let interval;
+let currentText = "";
+let started = false;
+let startTime;
+
+document.addEventListener("DOMContentLoaded", function () {
+
+  const inputBox = document.getElementById("inputText");
+  const timeEl = document.getElementById("time");
+  const wpmEl = document.getElementById("wpm");
+  const accuracyEl = document.getElementById("accuracy");
+
+  // LOAD TEXT
+  async function loadText() {
+    let level = document.getElementById("difficulty").value;
+
+    let res = await fetch(`/get-paragraph/${level}`);
+    let data = await res.json();
+
+    currentText = data.text || "";
+
+    let html = "";
+    currentText.split("").forEach((char, index) => {
+      html += `<span id="char-${index}">${char}</span>`;
+    });
+
+    document.getElementById("textDisplay").innerHTML = html;
+
+    setActiveChar(0);
+
+    inputBox.value = "";
+    inputBox.disabled = false;
+  }
+
+  // CURSOR
+  function setActiveChar(index) {
+    document.querySelectorAll("#textDisplay span").forEach(s => {
+      s.classList.remove("typing-cursor");
+    });
+
+    let current = document.getElementById(`char-${index}`);
+    if (current) {
+      current.classList.add("typing-cursor");
+      current.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  }
+
+  // START TEST
+  function startTest() {
+    if (started) return;
+
+    started = true;
+    timer = 60;
+    startTime = new Date();
+
+    interval = setInterval(() => {
+      timer--;
+      timeEl.innerText = timer;
+
+      if (timer <= 0) {
+        endTest();
+      }
+    }, 1000);
+  }
+
+  // END TEST
+  function endTest() {
+    clearInterval(interval);
+    started = false;
+
+    inputBox.disabled = true;
+
+    showResultPopup(
+      wpmEl.innerText,
+      accuracyEl.innerText
+    );
+  }
+
+  // INPUT EVENT
+  inputBox.addEventListener("input", function () {
+
+    if (!started) startTest();
+
+    let input = this.value;
+    let spans = document.querySelectorAll("#textDisplay span");
+
+    let correctChars = 0;
+
+    spans.forEach((span, index) => {
+      let typedChar = input[index];
+
+      span.classList.remove("text-green-600", "bg-red-200");
+
+      if (typedChar == null) return;
+
+      if (typedChar === span.innerText) {
+        span.classList.add("text-green-600");
+        correctChars++;
+      } else {
+        span.classList.add("bg-red-200");
+      }
+    });
+
+    setActiveChar(input.length);
+
+    // NEXT TEXT
+    if (input.length === currentText.length) {
+      loadText();
+      return;
+    }
+
+    // WPM
+    let timeElapsed = (new Date() - startTime) / 1000 / 60;
+    let wpm = Math.round((input.length / 5) / timeElapsed) || 0;
+
+    wpmEl.innerText = wpm;
+
+    // ACCURACY
+    let accuracy = Math.round((correctChars / input.length) * 100) || 100;
+    accuracyEl.innerText = accuracy;
+  });
+
+  // RESET
+  window.resetTest = function () {
+    clearInterval(interval);
+
+    timer = 60;
+    started = false;
+
+    timeEl.innerText = 60;
+    wpmEl.innerText = 0;
+    accuracyEl.innerText = 100;
+
+    inputBox.value = "";
+    inputBox.disabled = false;
+
+    loadText();
+  };
+
+  // POPUP
+  window.showResultPopup = function (wpm, accuracy) {
+    document.getElementById("resultPopup").style.display = "block";
+
+    document.getElementById("finalWpm").innerText = wpm;
+    document.getElementById("finalAccuracy").innerText = accuracy;
+
+    drawChart(wpm, accuracy);
+  };
+
+  // CHART
+  window.drawChart = function (wpm, accuracy) {
+    const ctx = document.getElementById("chart");
+
+    if (window.myChart) {
+      window.myChart.destroy();
+    }
+
+    window.myChart = new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: ["WPM", "Accuracy"],
+        datasets: [{
+          data: [wpm, accuracy],
+          backgroundColor: ["#3b82f6", "#10b981"]
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: false }
+        }
+      }
+    });
+  };
+
+  // DIFFICULTY CHANGE
+  document.getElementById("difficulty").addEventListener("change", function () {
+    if (!started) loadText();
+  });
+
+  // INIT
+  loadText();
+
+});
+
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+
+
+
+{% endblock %}
