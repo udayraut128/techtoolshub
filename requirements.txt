@@ -8,3 +8,4 @@ pillow
 nepali-datetime
 moviepy
 pillow
+flask-mail

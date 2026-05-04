@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block title %}About Us | TechTools{% endblock %}
+
+{% block content %}
+
+<div class="min-h-screen bg-gray-50 py-4 px-4">
+
+  <div class="max-w-4xl mx-auto   p-8 ">
+
+    <!-- Header -->
+    <div class="flex items-center gap-3 mb-6">
+      <i data-lucide="info" class="w-6 h-6 text-indigo-600"></i>
+      <h1 class="text-2xl font-bold text-gray-800">About TechTools</h1>
+    </div>
+
+    <!-- Intro -->
+    <p class="text-gray-600 leading-relaxed mb-4">
+      TechTools is a collection of simple, fast, and powerful online utilities designed to improve productivity and make everyday digital tasks easier.
+    </p>
+
+    <p class="text-gray-600 leading-relaxed mb-6">
+      Our mission is to remove complexity from common tasks by providing tools that work instantly — no downloads, no signup, no hassle.
+    </p>
+
+    <!-- What We Do -->
+    <div class="mb-6">
+      <h2 class="text-lg font-semibold text-gray-800 mb-2 flex items-center gap-2">
+        <i data-lucide="settings" class="w-5 h-5 text-indigo-600"></i>
+        What We Do
+      </h2>
+      <p class="text-gray-600 text-sm leading-relaxed">
+        We build lightweight tools like file sharing, generators, and converters that help students, developers, and everyday users complete tasks faster and more efficiently.
+      </p>
+    </div>
+
+    <!-- Why Choose Us -->
+    <div class="mb-6">
+      <h2 class="text-lg font-semibold text-gray-800 mb-3 flex items-center gap-2">
+        <i data-lucide="star" class="w-5 h-5 text-indigo-600"></i>
+        Why Choose TechTools?
+      </h2>
+
+      <div class="grid sm:grid-cols-2 gap-4">
+
+        <div class="p-4 border rounded-xl hover:shadow-md transition">
+          <div class="flex items-center gap-2 mb-1">
+            <i data-lucide="zap" class="w-4 h-4 text-indigo-600"></i>
+            <h3 class="font-medium text-gray-800">Fast & Lightweight</h3>
+          </div>
+          <p class="text-sm text-gray-600">Optimized for speed so you get instant results.</p>
+        </div>
+
+        <div class="p-4 border rounded-xl hover:shadow-md transition">
+          <div class="flex items-center gap-2 mb-1">
+            <i data-lucide="smartphone" class="w-4 h-4 text-indigo-600"></i>
+            <h3 class="font-medium text-gray-800">Works Everywhere</h3>
+          </div>
+          <p class="text-sm text-gray-600">Fully responsive across mobile, tablet, and desktop.</p>
+        </div>
+
+        <div class="p-4 border rounded-xl hover:shadow-md transition">
+          <div class="flex items-center gap-2 mb-1">
+            <i data-lucide="shield" class="w-4 h-4 text-indigo-600"></i>
+            <h3 class="font-medium text-gray-800">Secure & Private</h3>
+          </div>
+          <p class="text-sm text-gray-600">We respect your privacy and keep your data safe.</p>
+        </div>
+
+        <div class="p-4 border rounded-xl hover:shadow-md transition">
+          <div class="flex items-center gap-2 mb-1">
+            <i data-lucide="layout" class="w-4 h-4 text-indigo-600"></i>
+            <h3 class="font-medium text-gray-800">Simple UI</h3>
+          </div>
+          <p class="text-sm text-gray-600">Clean design focused on ease of use.</p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Vision -->
+    <div class="mb-6">
+      <h2 class="text-lg font-semibold text-gray-800 mb-2 flex items-center gap-2">
+        <i data-lucide="target" class="w-5 h-5 text-indigo-600"></i>
+        Our Vision
+      </h2>
+      <p class="text-gray-600 text-sm leading-relaxed">
+        TechTools is continuously evolving. We aim to build an all-in-one platform where users can access every essential digital tool in one place.
+      </p>
+    </div>
+
+    <!-- CTA -->
+    <div class="mt-8 p-4 bg-indigo-50 border border-indigo-100 rounded-xl text-center">
+      <div class="flex justify-center mb-2">
+        <i data-lucide="message-circle" class="w-5 h-5 text-indigo-600"></i>
+      </div>
+      <p class="text-sm text-gray-700 mb-2">
+        Have suggestions or want a new tool?
+      </p>
+      <a href="/contact"
+         class="inline-block bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-indigo-700 transition">
+        Contact Us
+      </a>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- ICON INIT -->
+<script>
+lucide.createIcons();
+</script>
+
+{% endblock %}

@@ -1,7 +1,6 @@
-from flask import Flask, app, typing
+from flask import Flask
 import os
-
-from app.routes import image_to_pdf, mp3_converter
+from app.mail_config import init_mail
 
 def create_app():
     app = Flask(__name__)
@@ -13,7 +12,10 @@ def create_app():
 
     os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
-    # Register routes
+    # ✅ Initialize mail (config already inside mail_config.py)
+    init_mail(app)
+
+    # 🔹 Import Blueprints
     from .routes.main import main
     from .routes.qr import qr
     from .routes.group import group
@@ -23,7 +25,9 @@ def create_app():
     from .routes.typing import typing
     from .routes.mp3_converter import mp3_converter
     from .routes.image_to_pdf import image_to_pdf
+    from .routes.contact import contact_bp  
 
+    # 🔹 Register Blueprints
     app.register_blueprint(main)
     app.register_blueprint(qr)
     app.register_blueprint(group)
@@ -33,6 +37,6 @@ def create_app():
     app.register_blueprint(typing)
     app.register_blueprint(mp3_converter)
     app.register_blueprint(image_to_pdf)
-    
+    app.register_blueprint(contact_bp)  
 
     return app

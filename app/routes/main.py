@@ -6,6 +6,13 @@ main = Blueprint('main', __name__)
 def home():
     return render_template("index.html")
 
+@main.route("/about")
+def about():
+    return render_template("about.html")
+
+@main.route("/privacy")
+def privacy():
+    return render_template("privacy.html")
 
 @main.route("/robots.txt")
 def robots():

@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block title %}Privacy Policy | TechTools{% endblock %}
+
+{% block content %}
+
+<div class="min-h-screen bg-gray-50 py-10 px-4">
+
+  <div class="max-w-4xl mx-auto   p-8">
+
+    <!-- Header -->
+    <div class="flex items-center gap-3 mb-6">
+      <i data-lucide="shield" class="w-6 h-6 text-indigo-600"></i>
+      <h1 class="text-2xl font-bold text-gray-800">Privacy Policy</h1>
+    </div>
+
+    <!-- Intro -->
+    <p class="text-gray-600 mb-4">
+      At TechTools, your privacy is important to us. This policy explains how we handle your data when you use our tools and services.
+    </p>
+
+    <!-- Info Collection -->
+    <h2 class="font-semibold text-gray-800 mt-6 mb-2 flex items-center gap-2">
+      <i data-lucide="database" class="w-4 h-4 text-indigo-600"></i>
+      Information We Collect
+    </h2>
+    <p class="text-gray-600 mb-4">
+      We do not collect personal information unless you choose to provide it (such as contacting us via email). Most tools work without requiring any personal data.
+    </p>
+
+    <!-- File Handling -->
+    <h2 class="font-semibold text-gray-800 mt-6 mb-2 flex items-center gap-2">
+      <i data-lucide="file" class="w-4 h-4 text-indigo-600"></i>
+      File Processing
+    </h2>
+    <p class="text-gray-600 mb-4">
+      Any files uploaded to our tools are processed temporarily. We do not store or share your files permanently, and they are automatically removed after processing.
+    </p>
+
+    <!-- Cookies -->
+    <h2 class="font-semibold text-gray-800 mt-6 mb-2 flex items-center gap-2">
+      <i data-lucide="cookie" class="w-4 h-4 text-indigo-600"></i>
+      Cookies & Tracking
+    </h2>
+    <p class="text-gray-600 mb-4">
+      We may use basic cookies to improve website performance and user experience. These cookies do not store sensitive personal information.
+    </p>
+
+    <!-- Data Usage -->
+    <h2 class="font-semibold text-gray-800 mt-6 mb-2 flex items-center gap-2">
+      <i data-lucide="activity" class="w-4 h-4 text-indigo-600"></i>
+      How We Use Data
+    </h2>
+    <p class="text-gray-600 mb-4">
+      Any minimal data collected is used only to improve our services, fix bugs, and enhance user experience. We do not sell or share your data with third parties.
+    </p>
+
+    <!-- Security -->
+    <h2 class="font-semibold text-gray-800 mt-6 mb-2 flex items-center gap-2">
+      <i data-lucide="lock" class="w-4 h-4 text-indigo-600"></i>
+      Security
+    </h2>
+    <p class="text-gray-600 mb-4">
+      We implement standard security measures to protect your data and ensure safe usage of our tools.
+    </p>
+
+    <!-- Third Party -->
+    <h2 class="font-semibold text-gray-800 mt-6 mb-2 flex items-center gap-2">
+      <i data-lucide="share-2" class="w-4 h-4 text-indigo-600"></i>
+      Third-Party Services
+    </h2>
+    <p class="text-gray-600 mb-4">
+      Some features may rely on third-party services (such as hosting or analytics). These services may have their own privacy policies.
+    </p>
+
+    <!-- User Rights -->
+    <h2 class="font-semibold text-gray-800 mt-6 mb-2 flex items-center gap-2">
+      <i data-lucide="user-check" class="w-4 h-4 text-indigo-600"></i>
+      Your Rights
+    </h2>
+    <p class="text-gray-600 mb-4">
+      You have the right to contact us regarding your data, request removal (if applicable), or ask any questions about how your information is handled.
+    </p>
+
+    <!-- Updates -->
+    <h2 class="font-semibold text-gray-800 mt-6 mb-2 flex items-center gap-2">
+      <i data-lucide="refresh-cw" class="w-4 h-4 text-indigo-600"></i>
+      Policy Updates
+    </h2>
+    <p class="text-gray-600 mb-4">
+      We may update this Privacy Policy from time to time. Changes will be reflected on this page.
+    </p>
+
+    <!-- Contact -->
+    <div class="mt-8 p-4 bg-indigo-50 border border-indigo-100 rounded-xl">
+      <div class="flex items-center gap-2 mb-2">
+        <i data-lucide="mail" class="w-4 h-4 text-indigo-600"></i>
+        <h3 class="font-medium text-gray-800">Contact Us</h3>
+      </div>
+      <p class="text-sm text-gray-600">
+        If you have any questions about this Privacy Policy, you can contact us at 
+        <a href="mailto:support@hackerbytez.com" class="text-indigo-600 hover:underline">
+          support@hackerbytez.com
+        </a>
+      </p>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- ICON INIT -->
+<script>
+lucide.createIcons();
+</script>
+
+{% endblock %}
